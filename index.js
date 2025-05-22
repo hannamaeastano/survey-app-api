@@ -12,7 +12,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const corsOptions = {
     origin: ["http://localhost:3000",
-        'https://survey-app-api-ypn3.onrender.com'],
+        'https://survey-app-api-ypn3.onrender.com',
+        'https://survey-react-app.vercel.app'],
     credentials: true,
     optionsSuccessStatus: 200,
 };
