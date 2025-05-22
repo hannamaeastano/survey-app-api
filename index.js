@@ -11,7 +11,8 @@ const surveyRoutes = require("./routes/survey");
 const app = express();
 const PORT = process.env.PORT || 5000;
 const corsOptions = {
-    origin: "http://localhost:3000", // Use environment variable for frontend URL
+    origin: ["http://localhost:3000",
+        'https://survey-app-api-ypn3.onrender.com'],
     credentials: true,
     optionsSuccessStatus: 200,
 };
