@@ -1,12 +1,8 @@
-const express = require("express");
-const { getSurveys, createSurvey } = require("../controllers/survey");
-
+const express = require('express');
 const router = express.Router();
+const surveyController = require('../controllers/survey');
 
-// Route to get all surveys
-router.get("/", getSurveys);
-
-// Route to create a new survey
-router.post("/", createSurvey);
+// Existing routes...
+router.post('/submit', surveyController.submitSurvey);
 
 module.exports = router;

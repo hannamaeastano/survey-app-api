@@ -1,8 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const surveySchema = new mongoose.Schema({
-    answers: { type: Object, required: true }, // Store answers as a JSON object
-    createdAt: { type: Date, default: Date.now },
+const submissionSchema = new mongoose.Schema({
+  answers: {
+    Q1: { type: String, required: true },
+    Q2: { type: String, required: true },
+    Q3: { type: String, required: true }
+  }
 });
 
-module.exports = mongoose.model("Survey", surveySchema);
+module.exports = mongoose.model('Survey', submissionSchema);

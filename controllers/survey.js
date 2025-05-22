@@ -1,47 +1,44 @@
-const Survey = require('../models/survey');
+const Submission = require('../models/survey'); // Import the Submission model
 
-// Create a survey (core functionality)
-exports.createSurvey = async (req, res) => {
-    try {
-      console.log("Request body:", req.body); // Debug: Log the entire request body
-  
-      if (!req.body) {
-        return res.status(400).json({ 
-          message: "Request body is missing" 
-        });
-      }
-  
-      const { answers } = req.body;
-  
-      if (!answers) {
-        return res.status(400).json({ 
-          message: "Field 'answers' is required in the request body" 
-        });
-      }
-  
-      // ...rest of the code
-    } catch (error) {
-      console.error("Error details:", error);
-      res.status(500).json({ 
-        message: "Error creating survey",
-        error: error.message 
+// Submit survey answers
+exports.submitSurvey = async (req, res) => {
+  try {
+    const { Q1, Q2, Q3 } = req.body;
+
+    // Validate that all questions are answered
+    if (!Q1 || !Q2 || !Q3) {
+      return res.status(400).json({
+        message: "All questions (Q1, Q2, Q3) must be answered"
       });
     }
-  };
 
-// Get all surveys
-exports.getSurveys = async (req, res) => {
-  try {
-    const surveys = await Survey.find(); // Fetch all surveys from the database
-    res.status(200).json({
-      message: "Surveys fetched successfully!",
-      data: surveys
+    // Validate that answers are within the range "1" to "5"
+    if (!Q1 || !Q2 || !Q3) {
+        return res.status(400).json({
+          message: "All questions (Q1, Q2, Q3) must be answered"
+        });
+      }
+      
+      const validAnswers = ["1", "2", "3", "4", "5"];
+      if (![Q1, Q2, Q3].every(answer => validAnswers.includes(answer))) {
+        return res.status(400).json({
+          message: "Answers must be values between '1' and '5'"
+        });
+      }
+
+    // Save the submission to the database
+    const newSubmission = new Submission({ answers: { Q1, Q2, Q3 } });
+    await newSubmission.save();
+
+    res.status(201).json({
+      message: "Survey submitted successfully!",
+      data: newSubmission
     });
   } catch (error) {
-    console.error("Error fetching surveys:", error); // Log the full error
+    console.error("Error submitting survey:", error);
     res.status(500).json({
-      message: "Error fetching surveys",
-      error: error.message // Include error details
+      message: "Error submitting survey",
+      error: error.message
     });
   }
 };
